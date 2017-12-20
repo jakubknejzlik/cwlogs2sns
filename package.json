@@ -1,0 +1,21 @@
+{
+  "name": "cwlogs2sns",
+  "description": "AWS CloudWatch logs to SNS handler for AWS Lambda",
+  "version": "0.0.1",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jakubknejzlik/cwlogs2sns.git"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.1"
+  },
+  "scripts": {
+    "patch-release": "npm version patch && npm publish && git push --follow-tags",
+    "test": "cd test && mocha ."
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.172.0",
+    "mocha": "^4.0.1"
+  }
+}
