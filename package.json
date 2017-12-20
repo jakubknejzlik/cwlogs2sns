@@ -12,7 +12,7 @@
   },
   "scripts": {
     "patch-release": "npm version patch && npm publish && git push --follow-tags",
-    "test": "cd test && mocha ."
+    "test": "mocha test"
   },
   "devDependencies": {
     "aws-sdk": "^2.172.0",
