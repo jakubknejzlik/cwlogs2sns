@@ -10,11 +10,11 @@ const TRIGGER_WORDS = (process.env.TRIGGER_WORDS || "Error,Failure,Exception")
 module.exports = options => {
   options = options || {};
 
-  const tranformFn = options.tranformFn || tranformFn;
+  const _tranformFn = options.tranformFn || tranformFn;
 
   return (event, context, callback) => {
     helpers
-      .logsFromEvent(event, TRIGGER_WORDS, transformFn)
+      .logsFromEvent(event, TRIGGER_WORDS, _tranformFn)
       .map(log => {
         return sns.publishSNS(log.subject, log.message, log.topic);
       })
