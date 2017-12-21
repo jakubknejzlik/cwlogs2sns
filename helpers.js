@@ -12,7 +12,6 @@ const logsFromEvent = event => {
   return zlib
     .gunzipAsync(payload)
     .then(result => {
-      console.log(result.toString("ascii"));
       return JSON.parse(result.toString("ascii"));
     })
     .then(result => {

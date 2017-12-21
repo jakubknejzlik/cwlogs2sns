@@ -6,9 +6,10 @@ const AWS_SNS_ARN = process.env.AWS_SNS_ARN;
 
 const sns = Promise.promisifyAll(new aws.SNS());
 
-const publishSNS = message => {
+const publishSNS = (message, logGroup, logStream) => {
   return sns.publishAsync({
-    Message: "Test publish to SNS from Lambda",
+    Subject: `${logGroup} (${logStream})`,
+    Message: message,
     TopicArn: AWS_SNS_ARN
   });
 };
