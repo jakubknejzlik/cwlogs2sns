@@ -1,12 +1,7 @@
 const Promise = require("bluebird");
 const zlib = Promise.promisifyAll(require("zlib"));
 
-// Configuration
-const ERROR_WORDS = (process.env.ERROR_WORDS || "Error,Failure,Exception")
-  .toLowerCase()
-  .split(",");
-
-const logsFromEvent = event => {
+const logsFromEvent = (event, triggerWords, transformFn) => {
   var payload = new Buffer(event.awslogs.data, "base64");
 
   return zlib
@@ -15,14 +10,22 @@ const logsFromEvent = event => {
       return JSON.parse(result.toString("ascii"));
     })
     .then(result => {
-      return filterLogEvents(result);
+      return filterLogEvents(result, triggerWords);
+    })
+    .then(log => {
+      return Promise.map(log.logEvents, logEvent => {
+        return transformFn(logEvent, log.logGroup, log.logStream);
+      }).finally(event => {
+        return event !== null;
+      });
     });
 };
 
-const filterLogEvents = log => {
+const filterLogEvents = (log, triggerWords) => {
   log.logEvents = log.logEvents.filter(event => {
-    for (let i in ERROR_WORDS) {
-      let word = ERROR_WORDS[i];
+    for (let i in triggerWords) {
+      let word = triggerWords[i];
+      if (word === "*") return true;
       if (event.message.toLowerCase().indexOf(word) !== -1) {
         return true;
       }

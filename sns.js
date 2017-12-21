@@ -6,11 +6,11 @@ const AWS_SNS_ARN = process.env.AWS_SNS_ARN;
 
 const sns = Promise.promisifyAll(new aws.SNS());
 
-const publishSNS = (message, logGroup, logStream) => {
+const publishSNS = (subject, message, topic) => {
   return sns.publishAsync({
-    Subject: `${logGroup} (${logStream})`,
+    Subject: subject,
     Message: message,
-    TopicArn: AWS_SNS_ARN
+    TopicArn: topic || AWS_SNS_ARN
   });
 };
 
