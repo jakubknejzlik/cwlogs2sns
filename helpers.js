@@ -15,9 +15,13 @@ const logsFromEvent = (event, triggerWords, transformFn) => {
     .then(log => {
       return Promise.map(log.logEvents, logEvent => {
         return transformFn(logEvent, log.logGroup, log.logStream);
-      }).finally(event => {
-        return event !== null;
-      });
+      })
+        .filter(value => {
+          return !!value;
+        })
+        .finally(event => {
+          return event !== null;
+        });
     });
 };
 

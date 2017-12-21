@@ -99,4 +99,15 @@ describe("cwlogs", () => {
       assert.deepEqual(result, expectedOutput);
     });
   });
+
+  it("should parse payload for negative transformFn", () => {
+    const expectedOutput = [];
+    return helpers
+      .logsFromEvent(event, ["*"], () => {
+        return null;
+      })
+      .then(result => {
+        assert.deepEqual(result, expectedOutput);
+      });
+  });
 });
