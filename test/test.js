@@ -34,7 +34,7 @@ const eventRaw = {
   ]
 };
 
-const tranformFn = (logEvent, logGroup, logStream) => {
+const mapFn = (logEvent, logGroup, logStream) => {
   return {
     subject: `${logGroup} (${logStream})`,
     message: logEvent.message,
@@ -65,11 +65,9 @@ describe("cwlogs", () => {
         topic: `arn:blah:testLogGroup`
       }
     ];
-    return helpers
-      .logsFromEvent(event, ["exception"], tranformFn)
-      .then(result => {
-        assert.deepEqual(result, expectedOutput);
-      });
+    return helpers.logsFromEvent(event, ["exception"], mapFn).then(result => {
+      assert.deepEqual(result, expectedOutput);
+    });
   });
 
   it("should parse payload for all", () => {
@@ -95,12 +93,12 @@ describe("cwlogs", () => {
         topic: `arn:blah:testLogGroup`
       }
     ];
-    return helpers.logsFromEvent(event, ["*"], tranformFn).then(result => {
+    return helpers.logsFromEvent(event, ["*"], mapFn).then(result => {
       assert.deepEqual(result, expectedOutput);
     });
   });
 
-  it("should parse payload for negative transformFn", () => {
+  it("should parse payload for negative mapFn", () => {
     const expectedOutput = [];
     return helpers
       .logsFromEvent(event, ["*"], () => {

@@ -13,11 +13,11 @@ const TRIGGER_WORDS = (
 module.exports = options => {
   options = options || {};
 
-  const _transformFn = options.transformFn || transformFn;
+  const _mapFn = options.map || mapFn;
 
   return (event, context, callback) => {
     helpers
-      .logsFromEvent(event, TRIGGER_WORDS, _transformFn)
+      .logsFromEvent(event, TRIGGER_WORDS, _mapFn)
       .map(log => {
         return sns.publishSNS(log.subject, log.message, log.topic);
       })
@@ -28,7 +28,7 @@ module.exports = options => {
   };
 };
 
-const transformFn = (logEvent, logGroup, logStream) => {
+const mapFn = (logEvent, logGroup, logStream) => {
   return {
     subject: `${logGroup} (${logStream})`,
     message: logEvent.message,
