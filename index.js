@@ -3,7 +3,10 @@ const aws = require("aws-sdk");
 const sns = require("./sns");
 const helpers = require("./helpers");
 
-const TRIGGER_WORDS = (process.env.TRIGGER_WORDS || "Error,Failure,Exception")
+const TRIGGER_WORDS = (
+  process.env.TRIGGER_WORDS ||
+  "Error,Failure,Exception,UnhandledPromiseRejection"
+)
   .toLowerCase()
   .split(",");
 
